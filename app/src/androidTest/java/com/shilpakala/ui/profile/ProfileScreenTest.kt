@@ -4,11 +4,16 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.shilpakala.data.local.ArtisanProfileDao
+import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
+@RunWith(AndroidJUnit4::class)
 class ProfileScreenTest {
 
     @get:Rule
@@ -16,11 +21,10 @@ class ProfileScreenTest {
 
     @Test
     fun profileScreen_initialState_displaysRequiredFields() {
-        // Mock the DAO and ViewModel
-        val mockDao = mock<ArtisanProfileDao>()
-        // We need to provide a way to handle the Flow in ViewModel if we use a real one
-        // For a UI test focusing on display/validation, we can use a fake/mock ViewModel if possible
-        // but since ProfileViewModel is a class, let's use a real one with mock dependencies.
+        // Mock the DAO to return an empty flow to avoid NPE in ViewModel init
+        val mockDao = mock<ArtisanProfileDao> {
+            on { getAll() } doReturn flowOf(emptyList())
+        }
         val viewModel = ProfileViewModel(mockDao)
 
         composeTestRule.setContent {
@@ -36,7 +40,9 @@ class ProfileScreenTest {
 
     @Test
     fun clickingSave_withEmptyName_showsValidationError() {
-        val mockDao = mock<ArtisanProfileDao>()
+        val mockDao = mock<ArtisanProfileDao> {
+            on { getAll() } doReturn flowOf(emptyList())
+        }
         val viewModel = ProfileViewModel(mockDao)
 
         composeTestRule.setContent {

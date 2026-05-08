@@ -12,14 +12,16 @@ object ShareHelper {
     fun sharePhoto(
         context: Context,
         imageUri: String,
-        caption: String?
+        productName: String,
+        price: String
     ) {
+        val caption = "Handmade in Karnataka 🏺 | $productName | ₹$price"
         val uriForShare = resolveShareUri(context, imageUri)
 
         val shareIntent = ShareCompat.IntentBuilder(context)
             .setType("image/*")
             .setStream(uriForShare)
-            .setText(caption ?: "")
+            .setText(caption)
             .intent
             .apply {
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -28,13 +30,6 @@ object ShareHelper {
         context.startActivity(
             Intent.createChooser(shareIntent, null)
         )
-    }
-
-    fun sharePhotoOnly(
-        context: Context,
-        imageUri: String
-    ) {
-        sharePhoto(context, imageUri, null)
     }
 
     private fun resolveShareUri(
@@ -54,4 +49,3 @@ object ShareHelper {
         }
     }
 }
-

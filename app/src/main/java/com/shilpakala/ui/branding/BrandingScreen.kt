@@ -94,11 +94,11 @@ fun BrandingScreen(
             if (brandedUri != null) {
                 IconButton(
                     onClick = {
-                        val caption = "Handmade in Karnataka 🏺 | ${productName.ifBlank { "Product" }} | ₹${price.ifBlank { "0" }}"
                         ShareHelper.sharePhoto(
                             context = context,
                             imageUri = brandedUri.toString(),
-                            caption = caption
+                            productName = productName.ifBlank { "Product" },
+                            price = price.ifBlank { "0" }
                         )
                     },
                     modifier = Modifier
@@ -183,11 +183,11 @@ fun BrandingScreen(
                     scope.launch {
                         val saved = viewModel.saveToGallery(context)
                         if (saved != null) {
-                            val caption = "Handmade in Karnataka 🏺 | ${productName.ifBlank { "Product" }} | ₹${price.ifBlank { "0" }}"
                             ShareHelper.sharePhoto(
                                 context = context,
                                 imageUri = saved.toString(),
-                                caption = caption
+                                productName = productName.ifBlank { "Product" },
+                                price = price.ifBlank { "0" }
                             )
                             navController.navigate("gallery")
                         }

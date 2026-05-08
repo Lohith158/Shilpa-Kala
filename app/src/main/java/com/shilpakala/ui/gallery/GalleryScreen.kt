@@ -97,11 +97,11 @@ fun GalleryScreen(
                             photo = photo,
                             onLongPress = { photoToDelete = photo },
                             onShare = {
-                                val caption = "Handmade in Karnataka 🏺 | ${photo.productName} | ₹${photo.price}"
                                 ShareHelper.sharePhoto(
                                     context = context,
                                     imageUri = photo.photoUri,
-                                    caption = caption
+                                    productName = photo.productName,
+                                    price = photo.price.toString()
                                 )
                             }
                         )
